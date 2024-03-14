@@ -12,6 +12,8 @@ var usersRouter = require('./routes/users');
 var dpiRouter = require('./routes/dpi');
 var pemilikRouter = require('./routes/pemilik');
 var alat_tangkapRouter = require('./routes/alat_tangkap');
+var kapalRouter = require('./routes/kapal');
+
 
 var app = express();
 
@@ -42,6 +44,7 @@ app.use('/users', usersRouter);
 app.use('/dpi', dpiRouter)
 app.use('/pemilik', pemilikRouter)
 app.use('/alat_tangkap', alat_tangkapRouter)
+app.use('/kapal', kapalRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -14,28 +14,27 @@ router.get('/', async function (req, res, next) {
 });
 
 router.get('/create', async function (req, res, next) {
-    let  = await Model_pemilik.getAll();
-    let  = await Model_dpi.getAll();
-    let  = await Model_alat_tangkap.getAll();
+    let rows = await Model_pemilik.getAll();
+    let rows2 = await Model_dpi.getAll();
+    let rows3 = await Model_alat_tangkap.getAll();
     res.render('kapal/create', {
         nama_kapal: '',
         id_pemilik: '',
         id_dpi: '',
         id_alat_tangkap: '',
         data_pemilik: rows,
-        data_dpi: rows1,
-        data_alat_tangkap: rows2,
+        data_dpi: rows2,
+        data_alat: rows3,
     })
 })
 
 router.post('/store', async function (req, res, next) {
     try {
-        let { nama_kapal, id_pemilik, id_dpi , id_alat_tangkap} = req.body;
+        let { nama_kapal, id_pemilik, id_dpi, id_alat_tangkap } = req.body;
         let Data = {
             nama_kapal,
-            tingkat_kapal,
             id_pemilik,
-            id_dpi,
+            id_dpi, 
             id_alat_tangkap
         }
         await Model_kapal.Store(Data);
@@ -49,14 +48,11 @@ router.post('/store', async function (req, res, next) {
 
 router.get('/edit/(:id)', async function (req, res, next) {
     let id = req.params.id;
-    let mhs = await Model_mahasiswa.getAll();
     let rows = await Model_kapal.getId(id);
     res.render('kapal/edit', {
         id: rows[0].id_kapal,
-        nama_kapal: rows[0].nama_kapal,
-        tingkat_kapal: rows[0].tingkat_kapal,
-        id_mahasiswa: rows[0].id_mahasiswa,
-        data: mhs,
+        nama_dpi: rows[0].nama_dpi,
+        luas: rows[0].luas
     })
 })
 
@@ -65,18 +61,17 @@ router.get('/edit/(:id)', async function (req, res, next) {
 router.post('/update/(:id)', async function (req, res, next) {
     try {
         let id = req.params.id;
-        let { nama_kapal, tingkat_kapal, id_mahasiswa } = req.body;
+        let { nama_dpi, luas } = req.body;
         let Data = {
-            nama_kapal: nama_kapal,
-            tingkat_kapal: tingkat_kapal,
-            id_mahasiswa: id_mahasiswa,
+            nama_dpi: nama_dpi,
+            luas: luas
         }
         await Model_kapal.Update(id, Data);
         req.flash('success', 'Berhasil mengubah data');
         res.redirect('/kapal')
     } catch {
         req.flash('error', 'terjadi kesalahan pada fungsi');
-        res.render('/kapal');
+        res.redirect('/kapal');
     }
 })
 
