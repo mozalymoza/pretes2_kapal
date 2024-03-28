@@ -5,9 +5,11 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var flash = require('express-flash');
 var session = require('express-session');
+const MemoryStore = require('session-memory-store')(session);
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var superusersRouter = require('./routes/superusers');
 
 var dpiRouter = require('./routes/dpi');
 var pemilikRouter = require('./routes/pemilik');
@@ -29,9 +31,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
   cookie: {
-    maxAge: 6000
+    maxAge: 60000000000,
+    secure: false,
+    httpOnly: true,
+    sameSite: 'strict',
   },
-  store: new session.MemoryStore,
+  store: new MemoryStore(),
   saveUninitialized: true,
   resave: 'true',
   secret: 'secret',
@@ -41,6 +46,7 @@ app.use(flash())
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/superusers', superusersRouter);
 app.use('/dpi', dpiRouter)
 app.use('/pemilik', pemilikRouter)
 app.use('/alat_tangkap', alat_tangkapRouter)
